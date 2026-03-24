@@ -1,105 +1,75 @@
 package com.hangman.game;
 
-import javax.swing.*;
-import java.io.InputStream;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class JogoDaForca {
-    private Scanner arquivo;
+    private static List<String[]> palavras = new ArrayList<>();
 
-    public JogoDaForca() {
-        InputStream stream = this.getClass().getResourceAsStream("../dados/palavras.txt");
-        if (stream == null) {
-            JOptionPane.showMessageDialog(null, "Arquivo de palavras inexistente!");
-            System.exit(0);
+    static {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/java/com/hangman/dados/palavras.csv"))) {
+             String linha;
+             while ((linha = br.readLine()) != null){
+                palavras.add(linha.split(";"));
+            }
+        } catch (IOException e){
+            e.printStackTrace();
         }
-        this.arquivo = new Scanner(stream);
-        String linha;
-        while (arquivo.hasNext()) {
-            linha = arquivo.nextLine();
-            //processar linha
-        }
-        arquivo.close();
+    }
+    public static List<String[]> getPalavras() {
+        return palavras;
     }
 
     public void iniciar() {
-        imprimirForca(0);
-    }
-
-    public static void imprimirForca(int erros) {
-        String[] estagios = {
-                // Estágio 0: 0 erros (Apenas a forca)
+        System.out.println(
                 "  +---+\n" +
                         "  |   |\n" +
                         "      |\n" +
                         "      |\n" +
                         "      |\n" +
-                        "      |\n" +
-                        "=========",
-
-                // Estágio 1: 1 erro (Cabeça)
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "  O   |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "=========",
-
-                // Estágio 2: 2 erros (Corpo)
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "  O   |\n" +
-                        "  |   |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "=========",
-
-                // Estágio 3: 3 erros (Braço esquerdo)
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "  O   |\n" +
-                        " /|   |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "=========",
-
-                // Estágio 4: 4 erros (Braço direito)
-                // Nota: O caractere '\' precisa ser escapado com '\\' no Java
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "  O   |\n" +
-                        " /|\\  |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "=========",
-
-                // Estágio 5: 5 erros (Perna esquerda)
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "  O   |\n" +
-                        " /|\\  |\n" +
-                        " /    |\n" +
-                        "      |\n" +
-                        "=========",
-
-                // Estágio 6: 6 erros (Perna direita - Game Over)
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "  O   |\n" +
-                        " /|\\  |\n" +
-                        " / \\  |\n" +
                         "      |\n" +
                         "========="
-        };
-        System.out.println(estagios[erros]);
+        );
+        for (int i = 0; i < 5; i++) {
+            System.out.println("PALAVRA SORTEADA: " + getPalavra());
+        }
+    }
+    public String getPalavra() {
+        Random random = new Random();
+        int i = random.nextInt(palavras.size());
+        return palavras.get(i)[0];
+    }
+    public String getDica() {
+        return null;
     }
 
-    public Scanner getArquivo() {
-        return arquivo;
+    public String getTipo() {
+        return null;
     }
-
-    public void setArquivo(Scanner arquivo) {
-        this.arquivo = arquivo;
+    public ArrayList<String> getResultados() {
+        return null;
+    }
+    public ArrayList<Integer> getOcorrencia(String letra) throws Exception {
+        return null;
+    }
+    public boolean terminou() {
+        return false;
+    }
+    public int getAcertos() {
+        return 0;
+    }
+    public int getCodigoPenalidade() {
+        return 0;
+    }
+    public String getNomePenalidade() {
+        return null;
+    }
+    public String getResultado() {
+        return null;
     }
 }
