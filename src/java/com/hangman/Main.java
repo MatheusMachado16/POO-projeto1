@@ -26,6 +26,6 @@ public class Main {
                     game.iniciar();
                     break;
             }
-        } while (op != 0 );
+        } while (true);
     }
 }
