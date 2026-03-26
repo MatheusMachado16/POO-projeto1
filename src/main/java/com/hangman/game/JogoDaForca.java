@@ -1,9 +1,6 @@
 package com.hangman.game;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -12,12 +9,16 @@ public class JogoDaForca {
     private static List<String[]> palavras = new ArrayList<>();
 
     static {
-        try (BufferedReader br = new BufferedReader(new FileReader("src/java/com/hangman/dados/palavras.csv"))) {
-             String linha;
+        try (InputStream is = JogoDaForca.class.getClassLoader()
+                .getResourceAsStream("palavras.csv");
+        BufferedReader br = new BufferedReader(new InputStreamReader(is)))
+        {
+
+            String linha;
              while ((linha = br.readLine()) != null){
                 palavras.add(linha.split(";"));
             }
-        } catch (IOException e){
+        } catch (IOException | NullPointerException e){
             e.printStackTrace();
         }
     }
