@@ -1,9 +1,8 @@
 package com.hangman;
 
-import com.hangman.game.JogoDaForca;
-
-import java.util.ArrayList;
 import java.util.Scanner;
+
+import com.hangman.game.JogoDaForca;
 
 
 public class Main {
