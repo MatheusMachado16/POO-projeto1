@@ -50,8 +50,29 @@ public class JogoDaForca {
     public String getPalavra() {
         return this.palavraSorteada;
     }
-    public String getDica() {
-        return null;
+    public String getLetrasDescobertas() {
+    	String palavra = "";
+    	for (char l : letrasDescobertas) {
+    		palavra += l;
+    	}
+        return palavra;
+    }
+    
+    public boolean testarLetra(char letra) {
+    	boolean acertou = false;
+    	for (int i=0; i<palavraSorteada.length(); i++) {
+    		if (palavraSorteada.charAt(i) == letra) {
+    			acertou = true;
+    			letrasDescobertas[i] = letra;
+    			acertos++;
+    		}
+    	}
+    	return acertou;
+    }
+    
+    public boolean acabou() {
+    	if (acertos == palavraSorteada.length()) return true;
+    	return false;
     }
 
     public String getTipo() {
