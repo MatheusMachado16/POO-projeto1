@@ -20,11 +20,13 @@ public class Main {
 
             switch (op) {
                 case 0:
+                	sc.close();
                     return;
                 case 1:
                     game.iniciar();
                     break;
             }
         } while (true);
+        
     }
 }

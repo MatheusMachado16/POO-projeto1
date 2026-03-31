@@ -10,6 +10,13 @@ import java.util.Random;
 
 public class JogoDaForca {
     private static List<String[]> palavras = new ArrayList<>();
+    private String palavraSorteada;
+    private String dica;
+    private String tipo;
+    private char[] letrasDescobertas; // Vai guardar os "_ _ _" e as letras certas
+    private int acertos = 0;
+    private int erros = 0;
+    private final int MAX_ERROS = 6; // O limite para ser enforcado
 
     static {
         try (BufferedReader br = new BufferedReader(new FileReader("src/java/com/hangman/dados/palavras.csv"))) {
@@ -26,23 +33,22 @@ public class JogoDaForca {
     }
 
     public void iniciar() {
-        System.out.println(
-                "  +---+\n" +
-                        "  |   |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "      |\n" +
-                        "========="
-        );
-        for (int i = 0; i < 5; i++) {
-            System.out.println("PALAVRA SORTEADA: " + getPalavra());
+        Random random = new Random();
+        int i = random.nextInt(palavras.size());
+        String[] linha = palavras.get(i);
+        this.palavraSorteada = linha[0].toUpperCase();
+        this.dica = linha.length > 1 ? linha[1] : "Sem dica";
+        this.tipo = linha.length > 2 ? linha[2] : "Sem tipo";
+        this.erros = 0;
+        this.acertos = 0;
+        
+        this.letrasDescobertas = new char[palavraSorteada.length()];
+        for (int j = 0; j < letrasDescobertas.length; j++) {
+            letrasDescobertas[j] = '_';
         }
     }
     public String getPalavra() {
-        Random random = new Random();
-        int i = random.nextInt(palavras.size());
-        return palavras.get(i)[0];
+        return this.palavraSorteada;
     }
     public String getDica() {
         return null;
