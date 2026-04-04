@@ -1,4 +1,5 @@
 import java.io.InputStream;
+import java.text.Normalizer;
 import java.util.*;
 
 public class JogoDaForca {
@@ -62,7 +63,7 @@ public class JogoDaForca {
         return new String(letrasDescobertas);
     }
 
-    // Retorna a palavra completa
+    // Retorna a palavra completa (usada no resultado final da tela)
     public String getPalavraCompleta() {
         return palavraSorteada;
     }
@@ -71,21 +72,30 @@ public class JogoDaForca {
         return dica;
     }
 
+    // Remove acentos de uma string
+    private String semAcento(String s) {
+        return Normalizer.normalize(s, Normalizer.Form.NFD)
+                         .replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+    }
+
     public ArrayList<Integer> getOcorrencias(String letra) throws Exception {
 
         if (letra == null || letra.length() != 1) {
             throw new Exception("Digite apenas uma letra!");
         }
 
-        char l = letra.toUpperCase().charAt(0);
+        // Compara sem acento
+        char l = semAcento(letra.toUpperCase()).charAt(0);
         ArrayList<Integer> posicoes = new ArrayList<>();
 
         for (int i = 0; i < palavraSorteada.length(); i++) {
-            if (palavraSorteada.charAt(i) == l) {
+            char c = semAcento(String.valueOf(palavraSorteada.charAt(i))).charAt(0);
+            if (c == l) {
                 posicoes.add(i + 1);
 
                 if (letrasDescobertas[i] == '*') {
-                    letrasDescobertas[i] = l;
+                    // Revela a letra original (com acento) na palavra
+                    letrasDescobertas[i] = palavraSorteada.charAt(i);
                     acertos++;
                 }
             }
@@ -131,11 +141,17 @@ public class JogoDaForca {
                 "Perdeu primeiro braco",
                 "Perdeu segundo braco",
                 "Perdeu primeira perna",
-                "Perdeu segunda perna" 
-                
+                "Perdeu segunda perna"
         };
 
         return nomes[erros];
+    }
+
+    public void desistir() {
+        if (!historicoSalvo) {
+            historico.add(palavraSorteada + " - desistiu");
+            historicoSalvo = true;
+        }
     }
 
     public ArrayList<String> getResultados() {
